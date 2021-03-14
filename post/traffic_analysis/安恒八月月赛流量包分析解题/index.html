@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>安恒八月月赛流量包分析解题 - C0m3ct-安全笔记</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="c0m3ct" /><meta name="description" content="题目背景 总关卡 1、 某公司内网网络被黑客渗透，请分析流量，给出黑客使用的扫描器? 2、 某公司内网网络被黑客渗透，请分析流量，得到黑客扫描到的登录" /><meta name="keywords" content="security, pentest" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
+
+
+<link rel="canonical" href="https://c0m3ct.github.io/post/traffic_analysis/%E5%AE%89%E6%81%92%E5%85%AB%E6%9C%88%E6%9C%88%E8%B5%9B%E6%B5%81%E9%87%8F%E5%8C%85%E5%88%86%E6%9E%90%E8%A7%A3%E9%A2%98/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.b5a744db6de49a86cadafb3b70f555ab443f83c307a483402259e94726b045ff.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="安恒八月月赛流量包分析解题" />
+<meta property="og:description" content="题目背景 总关卡 1、 某公司内网网络被黑客渗透，请分析流量，给出黑客使用的扫描器? 2、 某公司内网网络被黑客渗透，请分析流量，得到黑客扫描到的登录" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://c0m3ct.github.io/post/traffic_analysis/%E5%AE%89%E6%81%92%E5%85%AB%E6%9C%88%E6%9C%88%E8%B5%9B%E6%B5%81%E9%87%8F%E5%8C%85%E5%88%86%E6%9E%90%E8%A7%A3%E9%A2%98/" />
+<meta property="article:published_time" content="2021-03-14T17:46:36+08:00" />
+<meta property="article:modified_time" content="2021-03-14T17:46:36+08:00" />
+<meta itemprop="name" content="安恒八月月赛流量包分析解题">
+<meta itemprop="description" content="题目背景 总关卡 1、 某公司内网网络被黑客渗透，请分析流量，给出黑客使用的扫描器? 2、 某公司内网网络被黑客渗透，请分析流量，得到黑客扫描到的登录">
+<meta itemprop="datePublished" content="2021-03-14T17:46:36+08:00" />
+<meta itemprop="dateModified" content="2021-03-14T17:46:36+08:00" />
+<meta itemprop="wordCount" content="1805">
+
+
+
+<meta itemprop="keywords" content="流量分析," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="安恒八月月赛流量包分析解题"/>
+<meta name="twitter:description" content="题目背景 总关卡 1、 某公司内网网络被黑客渗透，请分析流量，给出黑客使用的扫描器? 2、 某公司内网网络被黑客渗透，请分析流量，得到黑客扫描到的登录"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">C0m3ct</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">C0m3ct</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">安恒八月月赛流量包分析解题</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-03-14 </span>
+        <div class="post-category">
+            <a href="/categories/trafficanalysis/"> trafficAnalysis </a>
+            </div>
+          <span class="more-meta"> 约 1805 字 </span>
+          <span class="more-meta"> 预计阅读 4 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#题目背景">题目背景</a></li>
+        <li><a href="#总关卡">总关卡</a></li>
+        <li><a href="#解题过程">解题过程</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h3 id="题目背景">题目背景</h3>
+<p><img src="./../media/20210314_trafficAnalysis_001.png" alt="题目背景"></p>
+<h3 id="总关卡">总关卡</h3>
+<p>1、 某公司内网网络被黑客渗透，请分析流量，给出黑客使用的扫描器?</p>
+<p>2、 某公司内网网络被黑客渗透，请分析流量，得到黑客扫描到的登录后台是(相对路径即可)?</p>
+<p>3、 某公司内网网络被黑客渗透，请分析流量，得到黑客使用了什么账号密码登录了web后台？（形式：username/password）</p>
+<p>4、 某公司内网网络被黑客渗透，请分析流量，得到黑客上传的webshell文件名是？内容是什么？提交webshell内容的base编码。</p>
+<p>5、 某公司内网网络被黑客渗透，请分析流量，黑客在robots.txt中找到的flag是什么？</p>
+<p>6、 某公司内网网络被黑客渗透，请分析流量，黑客找到的数据库密码是多少？</p>
+<p>7、 某公司内网网络被黑客渗透，请分析流量，黑客在数据库中找到的hash_code是什么？</p>
+<p>8、 某公司内网网络被黑客渗透，请分析流量，黑客破解了账号ijnu@test.com得到的密码是什么？</p>
+<p>9、 某公司内网网络被黑客渗透，请分析流量，被黑客攻击的web服务器，网卡配置是什么？提交网卡内网IP。</p>
+<p>10、 某公司内网网络被黑客渗透，请分析流量，黑客使用了什么账号登录了mail系统？（形式：username/password）</p>
+<p>11、 某公司内网网络被黑客渗透，请分析流量，黑客获得的VPN，IP是多少？</p>
+<h3 id="解题过程">解题过程</h3>
+<h4 id="1黑客使用的扫描器awvs扫描器黑客ip为1921689459">1、黑客使用的扫描器：AWVS扫描器、黑客IP为192.168.94.59</h4>
+<h6 id="解题过程-1">解题过程</h6>
+<p>由于黑客使用的扫描器通常是对web层进行扫描的web扫描器，因而只需要筛选http数据包即可。在http包中，尝试筛选一些扫描器特征码中的关键字，例如：awvs扫描器关键字可以是wvs、acunetix等。查看http包中是否含有扫描器的特征码，发现数据包中含有awvs的特征码acunetix_wvs_security_test，由此可以判断是使用了awvs扫描器。并且，由请求数据包可以看到源IP地址为：192.168.94.59，目标IP地址为：192.168.32.189,因此可以判断黑客的IP地址为：192.168.94.59。
+<img src="./../media/20210314_trafficAnalysis_002.png" alt="awvs特征码"></p>
+<h4 id="2黑客扫描到的登录后台相对路径adminloginphpreclogin">2、黑客扫描到的登录后台(相对路径)：/admin/login.php?rec=login</h4>
+<h6 id="解题过程-2">解题过程</h6>
+<p>筛选http包中，查找关键字login，可以看到数据包中请求地址为:/admin/login.php?rec=&hellip;，我们可以跟踪http数据流，查看响应包报文信息。跟踪http流如下图所示：
+<img src="./../media/20210314_trafficAnalysis_003.png" alt="追踪http流"></p>
+<p>查看响应报文如图所示：
+<img src="./../media/20210314_trafficAnalysis_004.png" alt="查看响应报文"></p>
+<h4 id="3黑客使用了什么账号密码登录web后台形式usernamepasswordadminadminpass123">3、黑客使用了什么账号密码登录web后台(形式username/password)：admin/admin!@#pass123</h4>
+<h6 id="解题过程-3">解题过程</h6>
+<p>使用<code>http contains &quot;password&quot; &amp;&amp; http.request.method==&quot;POST&quot;</code>来筛选数据包，查找http报文中含有password且请求方法为POST的数据包，我们可以随机选择一个登陆成功的数据包，查看其登陆成功时页面跳转的地址与响应码。
+<img src="./../media/20210314_trafficAnalysis_005.png" alt="查看登陆成功数据包"></p>
+<p>我们追踪该数据包的http流，查看登陆成功时的响应码与跳转页面。
+<img src="./../media/20210314_trafficAnalysis_006.png" alt="查看登陆成功的响应码与跳转地址"></p>
+<p>由上图我们可以知道，当登陆成功时，响应码为302，跳转到/admin/index.php页面。所以我们可以通过<code>http.response.code eq 302 &amp;&amp; ip.dst eq 192.168.94.59</code>，查找由系统发送给黑客的响应报文中状态码为302且地址为/admin/index.php的数据包，即黑客登陆成功时的响应报文。
+<img src="./../media/20210314_trafficAnalysis_007.png" alt="黑客登陆成功的响应报文"></p>
+<p>由黑客登陆成功时的响应报文，我们能够跟踪http流，查看黑客的请求报文，从而得到黑客所使用的账号与密码信息。
+<img src="./../media/20210314_trafficAnalysis_008.png" alt="黑客登陆使用的账号与密码">
+综上可知，黑客使用的账号与密码为：admin/admin!@#pass123。</p>
+<h4 id="4黑客上传的webshell文件名和内容是什么需提交webshell内容的base编码pd9wahagqgv2ywwukgjhc2u2nf9kzwnvzguojf9qt1nuw2fjdglvbl0pktspg">4、黑客上传的webshell文件名和内容是什么，需提交webshell内容的base编码：PD9waHAgQGV2YWwuKGJhc2U2NF9kZWNvZGUoJF9QT1NUW2FjdGlvbl0pKTs/Pg==</h4>
+<p>由于是PHP脚本，所以黑客上传的webshell文件中会包含有eval，因此只需要查找eval就能得到文件名。查找<code>http contains&quot;eval&quot; &amp;&amp; http.request.method==&quot;POST&quot;</code>来筛选数据包，由此得到文件名为a.php，内容为<!-- raw HTML omitted -->，再对内容进行base64编码得到：PD9waHAgQGV2YWwuKGJhc2U2NF9kZWNvZGUoJF9QT1NUW2FjdGlvbl0pKTs/Pg==。
+<img src="./../media/20210314_trafficAnalysis_009.png" alt="webshell文件名与内容"></p>
+<!-- raw HTML omitted -->
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">c0m3ct</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2021-03-14
+        
+    </span>
+  </p>
+  
+  
+</div>
+<div class="post-reward">
+  <input type="checkbox" name="reward" id="reward" hidden />
+  <label class="reward-button" for="reward">赞赏支持</label>
+  <div class="qr-code">
+    
+    <label class="qr-code-image" for="reward">
+        <img class="image" src="/pay/wechat.jpg">
+        <span>微信打赏</span>
+      </label>
+    <label class="qr-code-image" for="reward">
+        <img class="image" src="/pay/alipay.jpg">
+        <span>支付宝打赏</span>
+      </label>
+  </div>
+</div><footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/">流量分析</a>
+          </div>
+      <nav class="post-nav">
+        
+        
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:c0m3ct@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/c0m3ct" class="iconfont icon-github" title="github"></a>
+  <a href="https://c0m3ct.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>c0m3ct</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

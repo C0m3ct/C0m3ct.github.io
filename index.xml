@@ -6,14 +6,14 @@
     <description>Recent content on C0m3ct-安全笔记</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Wed, 23 Sep 2020 19:51:36 +0800</lastBuildDate><atom:link href="https://c0m3ct.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 14 Mar 2021 17:46:36 +0800</lastBuildDate><atom:link href="https://c0m3ct.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>CewlKid: 1</title>
-      <link>https://c0m3ct.github.io/post/security/cewlkid/</link>
-      <pubDate>Wed, 23 Sep 2020 19:51:36 +0800</pubDate>
+      <title>安恒八月月赛流量包分析解题</title>
+      <link>https://c0m3ct.github.io/post/traffic_analysis/%E5%AE%89%E6%81%92%E5%85%AB%E6%9C%88%E6%9C%88%E8%B5%9B%E6%B5%81%E9%87%8F%E5%8C%85%E5%88%86%E6%9E%90%E8%A7%A3%E9%A2%98/</link>
+      <pubDate>Sun, 14 Mar 2021 17:46:36 +0800</pubDate>
       
-      <guid>https://c0m3ct.github.io/post/security/cewlkid/</guid>
-      <description>介绍 An intermediate boot2root. The name is a hint. The start is CTF but the end is real world and worth the effort. Created in Virtualbox. Goal: Get the root flag. 地址：CewlKid: 1 virtualbox网络设置 首先需要保证攻击机和靶子</description>
+      <guid>https://c0m3ct.github.io/post/traffic_analysis/%E5%AE%89%E6%81%92%E5%85%AB%E6%9C%88%E6%9C%88%E8%B5%9B%E6%B5%81%E9%87%8F%E5%8C%85%E5%88%86%E6%9E%90%E8%A7%A3%E9%A2%98/</guid>
+      <description>题目背景 总关卡 1、 某公司内网网络被黑客渗透，请分析流量，给出黑客使用的扫描器? 2、 某公司内网网络被黑客渗透，请分析流量，得到黑客扫描到的登录</description>
     </item>
     
   </channel>
