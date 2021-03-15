@@ -13,7 +13,7 @@
       <pubDate>Sun, 14 Mar 2021 01:46:36 +0800</pubDate>
       
       <guid>https://c0m3ct.github.io/post/miscellaneous/linux%E5%B8%B8%E8%A7%81%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%B7%AF%E5%BE%84/</guid>
-      <description>Linux常见配置文件路径 /etc/passwd 系统用户数据库文件 /etc/group 组的数据库文件 /etc/gshadow （存放密码） /etc/shadow （存放密码） /etc/profile (系统环境)</description>
+      <description>/etc/passwd 系统用户数据库文件 /etc/group 组的数据库文件 /etc/gshadow （存放密码） /etc/shadow （存放密码） /etc/profile (系统环境)</description>
     </item>
     
   </channel>
